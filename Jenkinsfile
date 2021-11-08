@@ -10,13 +10,13 @@ pipeline {
                 if (env.BRANCH_NAME == 'development') {
             sh '''
                 docker login -u happyduck -p Blank132!
-                docker build . -t laravel:1.$BUILD_NUMBER-development
+                docker build . -t happyduck:1.$BUILD_NUMBER-development
 '''
                 }
                 else if (env.BRANCH_NAME == 'staging') {
             sh '''
                 docker login -u happyduck -p Blank132!
-                docker build . -t laravel:1.$BUILD_NUMBER-staging
+                docker build . -t happyduck:1.$BUILD_NUMBER-staging
                     '''
 
                 }
@@ -34,13 +34,11 @@ pipeline {
             script {
                 if (env.BRANCH_NAME == 'development') {
             sh '''
-                docker tag laravel:$BUILD_NUMBER happyduck/laravel:1.$BUILD_NUMBER-development
                 docker push happyduck/laravel:1.$BUILD_NUMBER-development
         '''
                 }
                 else if (env.BRANCH_NAME == 'staging') {
             sh '''
-                docker tag laravel:$BUILD_NUMBER happyduck/laravel:1.$BUILD_NUMBER-staging
                 docker push happyduck/laravel:1.$BUILD_NUMBER-staging
                     '''
                 }
@@ -65,9 +63,9 @@ pipeline {
                 }
                 else if (env.BRANCH_NAME == 'staging') {
             sh '''
-                docker pull happyduck/laravel:$BUILD_NUMBER
+                docker pull happyduck/laravel:1.$BUILD_NUMBER-staging
                 docker rm -f laravel
-                docker run -dit --name laravel -p 80:8000 happyduck/laravel:$BUILD_NUMBER-staging
+                docker run -dit --name laravel -p 80:8000 happyduck/laravel:1.$BUILD_NUMBER-staging
                     '''
                 }
                 else if (env.BRANCH_NAME == 'production') {
